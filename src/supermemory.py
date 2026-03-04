@@ -155,6 +155,7 @@ async def supermemory_batch_add_documents(documents: list[DocumentInput]) -> Sup
         documents: List of documents to ingest.
 
     """
+    documents = [d if isinstance(d, DocumentInput) else DocumentInput.model_validate(d) for d in documents]
     payload = {
         "documents": [
             {
@@ -409,6 +410,7 @@ async def supermemory_create_memories(memories: list[MemoryInput], container_tag
         container_tag: User or project scope.
 
     """
+    memories = [m if isinstance(m, MemoryInput) else MemoryInput.model_validate(m) for m in memories]
     return await _req(
         HttpMethod.POST,
         "/v4/memories",
